@@ -11,7 +11,7 @@ raices :: Float -> Float -> Float -> (Float, Float)
 raices a b c = (x1, x2)
     where
         x1 = (-b + sqrt(b*b-4*a*c))/(2*a)       
-        x2 = (-b + sqrt(b*b-4*a*c))/(2*a)       
+        x2 = (-b - sqrt(b*b-4*a*c))/(2*a)       
 
 areaTriangulo ::  Float -> Float -> Float -> Float
 areaTriangulo a b c= sqrt(((a+b+c)/2)*(((a+b+c)/2)-a)*(((a+b+c)/2)-b)*(((a+b+c)/2)-c))
