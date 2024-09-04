@@ -22,22 +22,16 @@ indice (x:xs) n = indice xs (n-1)
 divisores :: Int -> [Int]
 divisores _ = undefined
 
-estaEnLista ::Eq a => [a] -> a -> Bool
-estaEnLista [] _ = False
-estaEnLista (x:xs) n = indice (x:xs) 0 == n || estaEnLista xs n
+estaEnLista :: Eq a => [a] -> a -> Bool
+estaEnLista xs n = not (null [x | x <- xs, x == n])
 
 eliminarDeLista :: Eq a => [a] -> a -> [a]
-eliminarDeLista [] _ = []
-eliminarDeLista (x:xs) n
-    | x == n = eliminarDeLista xs n
-    | otherwise = x:eliminarDeLista xs n
+eliminarDeLista xs n = [x | x <- xs, x /= n]
 
 conjunto :: Eq a => [a] -> [a]
 conjunto [] = []
-conjunto (x:xs)
-    | not (estaEnLista (x:xs) z) = x:xs
-    | estaEnLista (x:xs) z = x:conjunto (eliminarDeLista xs z)
-        where z = indice (x:xs) 0
+conjunto (x:xs) = x : conjunto (eliminarDeLista xs x)
+
 
 numerosPares :: Num a => [a] -> [a]
 numerosPares _ = undefined
