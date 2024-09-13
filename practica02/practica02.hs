@@ -24,7 +24,7 @@ divisores _ = undefined
 
 conjunto :: Eq a => [a] -> [a]
 conjunto [] = []
-conjunto (x:xs) = x : [y | y <- xs, y/=x]-- conjunto (eliminarDeLista xs x)
+conjunto (x:xs) = x : conjunto[y | y <- xs, y/=x]
 
 
 numerosPares :: Num a => [a] -> [a]
