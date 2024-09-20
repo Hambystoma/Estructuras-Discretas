@@ -21,7 +21,8 @@ convertirALista (Node a lista) = a : convertirALista lista
 conjunto :: Eq a => List a -> List a
 conjunto Void = Void
 conjunto (Node a lista) 
-    | a == conjunto lista = convertirAEstructura(convertirALista())
+    | estaContenido (conjunto lista) a = conjunto lista
+    | otherwise = Node a (conjunto lista)
 
 eliminarIndice :: List a -> Int -> List a
 eliminarIndice = undefined
