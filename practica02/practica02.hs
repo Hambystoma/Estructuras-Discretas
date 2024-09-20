@@ -3,8 +3,9 @@ longitud :: [a] -> Int
 longitud [] = 0
 longitud (x:xs) = 1 + longitud (xs)
 
-sumaLista :: Num a => [a] -> Int
+sumaLista :: Num a => [a] -> a
 sumaLista [] = 0
+sumaLista (x:xs) = x + sumaLista xs 
 
 agregaElemento :: [a] -> a -> Bool -> [a]
 agregaElemento (x:xs) y bool
@@ -12,7 +13,10 @@ agregaElemento (x:xs) y bool
     | otherwise = (x:xs)++[y]
 
 maximoLista :: (Num a, Ord a) => [a] -> a
-maximoLista _ = undefined
+maximoLista [x] = x 
+maximoLista (x:xs)
+    | x > maximoLista xs = x
+    | otherwise = maximoLista xs
 
 indice :: [a] -> Int -> a
 indice [] _ = error "indice fuera de rango"
