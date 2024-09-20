@@ -24,12 +24,13 @@ indice (x:xs) 0 = x
 indice (x:xs) n = indice xs (n-1)
 
 divisores :: Int -> [Int]
-divisores _ = undefined
+divisores n = [x | x <- [1..n], n `mod` x == 0]       
 
 conjunto :: Eq a => [a] -> [a]
 conjunto [] = []
 conjunto (x:xs) = x : conjunto[y | y <- xs, y/=x]
 
 
-numerosPares :: Num a => [a] -> [a]
-numerosPares _ = undefined
+numerosPares :: [Int] -> [Int]
+numerosPares xs = [x | x <- xs, x `mod` 2 == 0] 
+
