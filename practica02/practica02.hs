@@ -19,12 +19,11 @@ maximoLista (x:xs)
     | otherwise = maximoLista xs
 
 indice :: [a] -> Int -> a
-indice [a] n
-    |  0>n || n>longitud [a]-1= error "indice fuera de rango"
+indice [] _=error "se introdujo una lista vacia"
 indice (x:xs) n
-    |   n==0=x
+    |0>n || n>longitud (x:xs)-1= error "indice fuera de rango"
+    |n==0=x
     |otherwise=indice xs (n-1)
-
 divisores :: Int -> [Int]
 divisores n = [x | x <- [1..n], n `mod` x == 0]
 
