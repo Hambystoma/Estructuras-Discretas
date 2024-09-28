@@ -8,9 +8,9 @@ sumaLista [] = 0
 sumaLista (x:xs) = x + sumaLista xs
 
 agregaElemento :: [a] -> a -> Bool -> [a]
-agregaElemento [a] y bool
-    | bool = y:[a]
-    | otherwise = [a]++[y]
+agregaElemento x y bool
+    | bool = y:x
+    | otherwise = x++[y]
 
 maximoLista :: (Num a, Ord a) => [a] -> a
 maximoLista [x] = x
