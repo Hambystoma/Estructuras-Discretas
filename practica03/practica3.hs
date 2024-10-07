@@ -1,4 +1,5 @@
 import Control.Exception (ErrorCall(ErrorCall))
+import Distribution.Simple.GHC (installExe)
 data List a = Void | Node a (List a) deriving Show
 
 longitud :: List a -> Int
@@ -27,26 +28,20 @@ conjunto (Node a lista)
 
 
 eliminarIndice :: List a -> Int -> List a
-eliminarIndice l@(Node a lista) i = if i < 0 || i > longitud l -1 
-    then error "Indice fuera del rango permitido"
-    else if i==0 
-        then  lista
-        else Node a (eliminarIndice lista (i-1))
+eliminarIndice (Node a lista) 0 = lista
+eliminarIndice Void _ = error "La lista esta vacia"
+eliminarIndice (Node a lista) i 
+    | i<0 || i>longitud(Node a lista) = error"El indice esta fuera del rango permitido"
+    |otherwise = Node a (eliminarIndice lista (i-1))
 
 insertarIndice :: List a -> Int -> a -> List a
-insertarIndice l@(Node a lista) i nw = if (i < 0 || i > longitud l -1)
-    then error "Indice fuera del rango permitido"
-    else if i==0
-        then Node nw l 
-        else Node a (insertarIndice lista (i-1) nw) 
+insertarIndice lista 0 nw = Node nw lista
+insertarIndice (Node a lista) i nw
+    |i>longitud(Node a lista) || i<0 = error"indice fuera de rango"
+    |otherwise = Node a (insertarIndice lista (i-1) nw)
+insertarIndice Void _ nw = Node nw Void
 
-recorrerLista :: List a -> Int -> List a
-recorrerLista Void _ = Void 
-recorrerLista lista 0 = lista 
-recorrerLista lista n = recorrerLista (Node (ultimo lista) (mvUltimo lista)) (n - 1)
-  where
-    ultimo (Node a Void) = a
-    ultimo (Node _ lista) = ultimo lista
-    
-    mvUltimo (Node _ Void) = Void
-    mvUltimo (Node a lista) = Node a (mvUltimo lista)
+recorrerALaIzquierda :: List a -> Int -> List a
+recorrerALaIzquierda Void _ = Void 
+recorrerALaIzquierda lista 0 = lista 
+recorrerALaIzquierda (Node a lista) n = recorrerALaIzquierda (insertarIndice lista (longitud lista) a) (n-1)
