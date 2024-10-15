@@ -46,5 +46,10 @@ maximo (Raiz valor ArbolVacio ArbolVacio) = valor
 maximo (Raiz valor izq der) = maximum[valor, maximo izq, maximo der]
 
 -------------------- EJERCICIO 8 --------------------
-eliminar :: Ord a => Arbol a -> a -> Arbol a 
-eliminar = undefined
+eliminar ::Eq a => Ord a => Arbol a -> a -> Arbol a 
+eliminar ArbolVacio _ = ArbolVacio
+eliminar (Raiz valor izq der) num
+    |valor > num = Raiz valor (eliminar izq num) der
+    |valor < num = Raiz valor (eliminar der num) izq
+    |otherwise = ArbolVacio
+ 
