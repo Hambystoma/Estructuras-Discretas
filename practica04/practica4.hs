@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+{-# HLINT ignore "Use :" #-}
 data Arbol a = ArbolVacio | Raiz a (Arbol a) (Arbol a) deriving Show
 
 -------------------- EJERCICIO 1 --------------------
@@ -19,16 +21,29 @@ recorrido :: Arbol a -> Recorrido -> [a]
 recorrido = undefined
 
 -------------------- EJERCICIO 5 --------------------
+-- Función auxiliar para combinar niveles de los subárboles
+combinarNiveles :: [[a]] -> [[a]] -> [[a]]
+combinarNiveles [] ys = ys
+combinarNiveles xs [] = xs
+combinarNiveles (x:xs) (y:ys) = (x ++ y) : combinarNiveles xs ys
+
+-- Función niveles
 niveles :: Arbol a -> [[a]]
-niveles = undefined
+niveles ArbolVacio = []
+niveles (Raiz valor izq der) = [ [valor] ] ++ combinarNiveles (niveles izq) (niveles der)
+
 
 -------------------- EJERCICIO 6 --------------------
-minimo :: Arbol a -> a 
-minimo = undefined
+minimo :: Ord a => Arbol a -> a 
+minimo ArbolVacio = error "No existe el minimo de un arbol vacio"
+minimo (Raiz valor ArbolVacio ArbolVacio) = valor
+minimo (Raiz valor izq der) = minimum [valor, minimo izq, minimo der]
 
 -------------------- EJERCICIO 7 --------------------
-maximo :: Arbol a -> a 
-maximo = undefined
+maximo :: Ord a => Arbol a -> a 
+maximo ArbolVacio = error "No esiste el maximo de un arbol vacio"
+maximo (Raiz valor ArbolVacio ArbolVacio) = valor
+maximo (Raiz valor izq der) = maximum[valor, maximo izq, maximo der]
 
 -------------------- EJERCICIO 8 --------------------
 eliminar :: Ord a => Arbol a -> a -> Arbol a 
