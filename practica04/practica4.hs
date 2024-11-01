@@ -3,22 +3,35 @@
 data Arbol a = ArbolVacio | Raiz a (Arbol a) (Arbol a) deriving Show
 
 -------------------- EJERCICIO 1 --------------------
-longitud :: Arbol a -> Int 
-longitud = undefined
+longitud :: Arbol a -> Int
+longitud ArbolVacio = 0
+longitud (Raiz _ izq der) = 1 + longitud izq + longitud der
 
 -------------------- EJERCICIO 2 --------------------
-profundidad :: Arbol a -> Int 
-profundidad = undefined
+profundidad :: Arbol a -> Int
+profundidad ArbolVacio = 0
+profundidad (Raiz _ izq der) = 1 + max (profundidad izq) (profundidad der)
 
 -------------------- EJERCICIO 3 --------------------
-ancho :: Arbol a -> Int 
-ancho = undefined
+ancho :: Arbol a -> Int
+ancho ArbolVacio = 0
+ancho (Raiz _ ArbolVacio ArbolVacio) = 1
+ancho (Raiz _ izq der) = ancho izq + ancho der
 
 -------------------- EJERCICIO 4 --------------------
-data Recorrido = InOrder | PreOrder | PosOrder
+data Recorrido = InOrder | PreOrder | PostOrder --modifique la firma porque originalmente decia PosOrder
 
 recorrido :: Arbol a -> Recorrido -> [a]
-recorrido = undefined
+-- Caso InOrder
+recorrido ArbolVacio _ = []
+recorrido (Raiz valor izq der) InOrder =
+    recorrido izq InOrder ++ [valor] ++ recorrido der InOrder
+-- Caso PreOrder
+recorrido (Raiz valor izq der) PreOrder =
+    [valor] ++ recorrido izq PreOrder ++ recorrido der PreOrder
+-- Caso PostOrder
+recorrido (Raiz valor izq der) PostOrder =
+    recorrido izq PostOrder ++ recorrido der PostOrder ++ [valor]
 
 -------------------- EJERCICIO 5 --------------------
 -- Función auxiliar para combinar niveles de los subárboles
