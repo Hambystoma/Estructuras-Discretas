@@ -85,6 +85,11 @@ eliminar ::Eq a => Ord a => Arbol a -> a -> Arbol a
 eliminar ArbolVacio _ = ArbolVacio
 eliminar (Raiz valor izq der) num
     |valor > num = Raiz valor (eliminar izq num) der
-    |valor < num = Raiz valor (eliminar der num) izq
-    |otherwise = ArbolVacio
-
+    |valor < num = Raiz valor izq (eliminar der num)
+    |otherwise = eliminarNodo (Raiz valor izq der)
+        where
+            eliminarNodo (Raiz _ ArbolVacio der) = der
+            eliminarNodo (Raiz _ izq ArbolVacio) = izq
+            eliminarNodo (Raiz valor izq der) = Raiz maxizq (eliminar izq maxizq) der
+                where
+                    maxizq = maximo izq
