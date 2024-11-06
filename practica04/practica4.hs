@@ -47,22 +47,44 @@ niveles (Raiz valor izq der) = [ [valor] ] ++ combinarNiveles (niveles izq) (niv
 
 
 -------------------- EJERCICIO 6 --------------------
-minimo :: Ord a => Arbol a -> a 
+minimo :: Ord a => Arbol a -> a
 minimo ArbolVacio = error "No existe el minimo de un arbol vacio"
 minimo (Raiz valor ArbolVacio ArbolVacio) = valor
-minimo (Raiz valor izq der) = minimum [valor, minimo izq, minimo der]
+minimo (Raiz valor izq der) = menor valor minizq minder
+    where
+        minizq = case izq of
+                 ArbolVacio -> valor
+                 _ -> minimo izq
+        minder = case der of
+                 ArbolVacio -> valor
+                 _ -> minimo der
+        menor a b c
+          | a<=b && b<=c = a
+          | b<=a && a<=c = b
+          | otherwise = c
 
 -------------------- EJERCICIO 7 --------------------
-maximo :: Ord a => Arbol a -> a 
+maximo :: Ord a => Arbol a -> a
 maximo ArbolVacio = error "No esiste el maximo de un arbol vacio"
 maximo (Raiz valor ArbolVacio ArbolVacio) = valor
-maximo (Raiz valor izq der) = maximum[valor, maximo izq, maximo der]
+maximo (Raiz valor izq der) = mayor valor maxizq maxder
+    where
+        maxizq = case izq of
+                 ArbolVacio -> valor
+                 _ -> maximo izq
+        maxder = case der of
+                 ArbolVacio -> valor
+                 _ -> maximo der
+        mayor a b c
+            |a>=b && b>=c = a
+            |b>=a && a>=c = c
+            |otherwise = c
 
 -------------------- EJERCICIO 8 --------------------
-eliminar ::Eq a => Ord a => Arbol a -> a -> Arbol a 
+eliminar ::Eq a => Ord a => Arbol a -> a -> Arbol a
 eliminar ArbolVacio _ = ArbolVacio
 eliminar (Raiz valor izq der) num
     |valor > num = Raiz valor (eliminar izq num) der
     |valor < num = Raiz valor (eliminar der num) izq
     |otherwise = ArbolVacio
- 
+
