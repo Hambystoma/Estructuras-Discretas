@@ -77,7 +77,7 @@ maximo (Raiz valor izq der) = mayor valor maxizq maxder
                  _ -> maximo der
         mayor a b c
             |a>=b && b>=c = a
-            |b>=a && a>=c = c
+            |b>=a && a>=c = b
             |otherwise = c
 
 -------------------- EJERCICIO 8 --------------------
