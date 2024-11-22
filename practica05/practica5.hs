@@ -1,5 +1,3 @@
-import Distribution.SPDX (LicenseId(MakeIndex))
-import Distribution.ModuleName (main)
 data Var = A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z deriving (Show, Eq, Ord)
 
 data Formula = Atom Var
@@ -59,20 +57,17 @@ equivalencia (f1 :<=>: f2) = equivalencia (f1:=>:f2):&:equivalencia (f2:=>:f1)
 -----------------------------------------------------
 
 -------------------- EJERCICIO 4 --------------------
-interpretacion :: Formula -> [(Var,Bool)] -> Bool
-interpretacion _ [] = error "No todas las variables estan definidas."
-interpretacion (Neg (Atom variable)) ((var1, estado1):xs) = if variable == var1
-                                                          then not estado1
-                                                          else interpretacion (Neg (Atom variable)) xs
-interpretacion (Neg f1) lista = not (interpretacion f1 lista)
-interpretacion (Atom variable) ((var1, estado1):xs) = if variable == var1
-                                                      then estado1
-                                                      else interpretacion (Atom variable) xs
-interpretacion (f1:&:f2) lista = interpretacion f1 lista && interpretacion f2 lista
-interpretacion (f1:|:f2) lista = interpretacion f1 lista || interpretacion f2 lista
-interpretacion (f1:=>:f2) lista = interpretacion f1 lista || not (interpretacion f2 lista)
-interpretacion (f1:<=>:f2) lista = interpretacion (f1 :=>: f2) lista && interpretacion (f2 :=>: f1) lista
+variablesd :: Formula -> [Var]
+variablesd (Atom v) = [v]
+variablesd (Neg f) = variablesd f
+variablesd (f1 :&: f2) = variablesd f1 ++ variablesd f2
+variablesd (f1 :|: f2) = variablesd f1 ++ variablesd f2
+variablesd (f1 :=>: f2) = variablesd f1 ++ variablesd f2
+variablesd (f1 :<=>: f2) = variablesd f1 ++ variablesd f2
 
+-- Función para evaluar la fórmula con la lista de variablesd
+interpretaciones :: Formula -> [(Var, Bool)] -> Bool
+interpretaciones = undefined
 -----------------------------------------------------
 
 -------------------- EJERCICIO 5 --------------------
