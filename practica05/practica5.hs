@@ -93,7 +93,6 @@ longitud (x:xs) =1+longitud xs
 -----------------------------------------------------
 
 -------------------- EJERCICIO 6 --------------------
-
 tablaDeVerdad :: Formula -> [([(Var,Bool)],Bool)]
-tablaDeVerdad _ = undefined
+tablaDeVerdad formula = undefined
 ----------------------------------------------------- 
