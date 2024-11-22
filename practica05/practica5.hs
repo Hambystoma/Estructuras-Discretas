@@ -1,3 +1,4 @@
+import Control.Monad (forM)
 data Var = A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z deriving (Show, Eq, Ord)
 
 data Formula = Atom Var
@@ -23,7 +24,7 @@ variables (f1 :<=>: f2) = conjunto (variables f1 ++ variables f2)
 
 conjunto :: Eq a => [a] -> [a]
 conjunto []=[]
-conjunto (x:xs)=if estaContenido x (x:xs)
+conjunto (x:xs)=if estaContenido x xs
                 then conjunto xs
                 else x:conjunto xs
 
@@ -57,29 +58,38 @@ equivalencia (f1 :<=>: f2) = equivalencia (f1:=>:f2):&:equivalencia (f2:=>:f1)
 -----------------------------------------------------
 
 -------------------- EJERCICIO 4 --------------------
-variablesd :: Formula -> [Var]
-variablesd (Atom v) = [v]
-variablesd (Neg f) = variablesd f
-variablesd (f1 :&: f2) = variablesd f1 ++ variablesd f2
-variablesd (f1 :|: f2) = variablesd f1 ++ variablesd f2
-variablesd (f1 :=>: f2) = variablesd f1 ++ variablesd f2
-variablesd (f1 :<=>: f2) = variablesd f1 ++ variablesd f2
-
 -- Función para evaluar la fórmula con la lista de variablesd
 interpretaciones :: Formula -> [(Var, Bool)] -> Bool
 interpretaciones = undefined
+
+
 -----------------------------------------------------
 
 -------------------- EJERCICIO 5 --------------------
 combinaciones :: Formula -> [[(Var,Bool)]]
-combinaciones (Atom var) = [[(var,True),(var, False)]]
-combinaciones (Neg f1) = combinaciones f1
-combinaciones (f1:&:f2) = undefined
+combinaciones formula = asignacionLista (variables formula) (listaCombinaciones [[True],[False]] (longitud (variables formula)-1))
 
 combinacionesbooleanas :: [[Bool]] -> Bool -> [[Bool]]
-combinacionesbooleanas [listabool] bool2 = [bool2:listabool]
+combinacionesbooleanas [listabool] bool2 = [listabool++[bool2]]
+combinacionesbooleanas (b:bs) bool2 = combinacionesbooleanas [b] bool2 ++ combinacionesbooleanas bs bool2
 
+listaCombinaciones :: [[Bool]] -> Int -> [[Bool]]
+listaCombinaciones booleanos 0 = booleanos
+listaCombinaciones booleanos n = listaCombinaciones (combinacionesbooleanas booleanos True ++ combinacionesbooleanas booleanos False)  (n-1)
 
+asignarValor :: [Var] -> [Bool] -> [(Var,Bool)]
+asignarValor [] _ = error "Se vaciaron las vairables"
+asignarValor _ [] = error "Se vaciaron los booleanos"
+asignarValor [var] [bool] = [(var,bool)]
+asignarValor (v:vs) (b:bs) = asignarValor [v] [b] ++ asignarValor vs bs
+
+asignacionLista :: [Var] -> [[Bool]] -> [[(Var,Bool)]]
+asignacionLista var [bool] = [asignarValor var bool]
+asignacionLista var (b:bs) = asignarValor var b : asignacionLista var bs
+
+longitud :: [a] -> Int
+longitud [] = 0
+longitud (x:xs) =1+longitud xs 
 -----------------------------------------------------
 
 -------------------- EJERCICIO 6 --------------------
